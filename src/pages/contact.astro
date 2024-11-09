@@ -1,46 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-const pageTitle = "Contact Nasif Salaam | Visual Designer & AI Enablement Specialist";
-const pageDescription = "Get in touch to discuss your visual design needs or learn how AI can enhance your creative workflows.";
 ---
 
-<Layout 
-  title={pageTitle}
-  description={pageDescription}
->
+<Layout title="Contact">
   <div class="container max-w-5xl mx-auto px-4 pt-32">
     <div class="max-w-2xl mx-auto">
-      <h1 class="text-4xl font-bold mb-6 text-foreground">Let's Create Something Amazing</h1>
-      <p class="text-xl text-muted-foreground mb-8">
-        Looking to elevate your digital presence through innovative design or integrate AI into your creative workflows? I'd love to hear about your project.
+      <h1 class="text-4xl font-bold mb-6 text-foreground">Get in Touch</h1>
+      <p class="text-xl text-muted-foreground mb-12">
+        Have a project in mind? Let's discuss how we can work together to bring your ideas to life.
       </p>
-      
-      <!-- Services and Contact Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div class="space-y-4">
-          <h2 class="text-xl font-semibold text-foreground">Services</h2>
-          <ul class="space-y-2 text-muted-foreground">
-            <li>• Visual Design & UI Systems</li>
-            <li>• AI Workflow Implementation</li>
-            <li>• Design System Development</li>
-            <li>• Team AI Enablement Training</li>
-          </ul>
-        </div>
-        <div class="space-y-4">
-          <h2 class="text-xl font-semibold text-foreground">Contact Details</h2>
-          <div class="space-y-2 text-muted-foreground">
-            <p>Email: hello@nasifsalaam.com</p>
-            <p>Location: Cape Town, South Africa</p>
-            <p>Available for: Remote & Local Projects</p>
-          </div>
-        </div>
-      </div>
 
-      <!-- Form with status message -->
-      <div id="status-message" class="hidden mb-6 p-4 rounded-lg"></div>
-
-      <form id="contact-form" class="space-y-6">
+      <form id="contactForm" class="space-y-6">
         <div>
           <label for="name" class="block text-sm font-medium text-foreground mb-2">
             Name
@@ -68,97 +38,91 @@ const pageDescription = "Get in touch to discuss your visual design needs or lea
         </div>
 
         <div>
-          <label for="service" class="block text-sm font-medium text-foreground mb-2">
-            Service Interest
-          </label>
-          <select
-            id="service"
-            name="service"
-            class="w-full rounded-lg bg-transparent border border-primary/20 px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
-            required
-          >
-            <option value="">Select a service</option>
-            <option value="visual-design">Visual Design</option>
-            <option value="ai-enablement">AI Enablement</option>
-            <option value="design-systems">Design Systems</option>
-            <option value="training">Team Training</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div>
           <label for="message" class="block text-sm font-medium text-foreground mb-2">
-            Project Details
+            Message
           </label>
           <textarea
             id="message"
             name="message"
             rows="6"
-            placeholder="Tell me about your project, timeline, and goals..."
             class="w-full rounded-lg bg-transparent border border-primary/20 px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
             required
           ></textarea>
         </div>
 
+        <div id="formStatus" class="hidden">
+          <p class="error hidden text-red-500">There was an error sending your message. Please try again.</p>
+        </div>
+
         <button
           type="submit"
+          id="submitButton"
           class="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80"
         >
           Send Message
         </button>
       </form>
-
-      <div class="mt-12 text-sm text-muted-foreground">
-        <p>* I typically respond within 24-48 hours during business days.</p>
-      </div>
     </div>
   </div>
 </Layout>
 
 <script>
-  // Form handling
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const button = form?.querySelector('button') as HTMLButtonElement;
-  const statusMessage = document.getElementById('status-message') as HTMLDivElement;
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const formStatus = document.getElementById('formStatus');
+  const errorMessage = formStatus?.querySelector('.error');
+  const submitButton = document.getElementById('submitButton') as HTMLButtonElement;
 
-  function showStatus(message: string, type: 'success' | 'error') {
-    statusMessage.textContent = message;
-    statusMessage.classList.remove('hidden', 'bg-green-500/10', 'text-green-500', 'bg-red-500/10', 'text-red-500');
-    
-    if (type === 'success') {
-      statusMessage.classList.add('bg-green-500/10', 'text-green-500');
-    } else {
-      statusMessage.classList.add('bg-red-500/10', 'text-red-500');
+  const showError = () => {
+    if (formStatus && errorMessage) {
+      formStatus.classList.remove('hidden');
+      errorMessage.classList.remove('hidden');
     }
-  }
+  };
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Update button state
-    const originalText = button.textContent;
-    button.disabled = true;
-    button.textContent = 'Sending...';
+    // Disable submit button and show loading state
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Sending...
+      `;
+    }
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/send-email', {
         method: 'POST',
-        body: new FormData(form)
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        showStatus('Message sent successfully! I\'ll be in touch soon.', 'success');
-        form.reset();
+      const result = await response.json();
+
+      if (result.success) {
         window.location.href = '/thank-you';
       } else {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to send message');
+        showError();
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Send Message';
+        }
       }
     } catch (error) {
-      console.error('Error:', error);
-      showStatus(error.message || 'Failed to send message. Please try again.', 'error');
-      button.disabled = false;
-      button.textContent = originalText;
+      showError();
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
+      }
     }
   });
 </script>

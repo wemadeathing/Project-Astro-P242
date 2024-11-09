@@ -1,9 +1,0 @@
-[env.production]
-name = "nasifsalaam-portfolio"
-workers_dev = true
-
-[env.production.vars]
-RESEND_API_KEY = ""  # Will be set in Cloudflare dashboard
-
-[site]
-bucket = "./dist"
