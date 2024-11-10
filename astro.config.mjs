@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  output: 'hybrid',
+  output: 'hybrid', // Use 'hybrid' for mixed rendering
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -13,5 +13,5 @@ export default defineConfig({
     react(),
     mdx(),
   ],
-  adapter: cloudflare(),
+  adapter: cloudflare(), // Place adapter here, outside of integrations
 });

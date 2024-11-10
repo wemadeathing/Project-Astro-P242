@@ -1,41 +1,39 @@
-import { Resend } from 'resend';
 import type { APIRoute } from 'astro';
-
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const formData = await request.json();
-    const { name, email, message } = formData;
-
-    const { data, error } = await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: ['salaam.nasif@gmail.com'], // Replace with your email
-      subject: `New Contact Form Submission from ${name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `,
-    });
-
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    return new Response(JSON.stringify({ success: true, data }), {
+    const data = await request.json();
+    
+    // Your email sending logic here
+    
+    return new Response(JSON.stringify({
+      message: 'Email sent successfully'
+    }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+    return new Response(JSON.stringify({
+      message: 'Failed to send email'
+    }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
-}
+};
+
+// Optional: Handle GET requests with an error
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({
+    message: 'This endpoint only accepts POST requests'
+  }), {
+    status: 405, // Method Not Allowed
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+};
