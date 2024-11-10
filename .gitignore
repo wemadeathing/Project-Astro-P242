@@ -31,3 +31,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?.env
+
+# Example environment variables
+!.env.example

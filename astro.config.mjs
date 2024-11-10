@@ -4,6 +4,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
+  output: 'hybrid',
   integrations: [
     tailwind({
       applyBaseStyles: false,

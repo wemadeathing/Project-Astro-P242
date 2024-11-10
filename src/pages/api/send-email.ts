@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import type { APIRoute } from 'astro';
 
-const resend = new Resend('re_d4w8ti5A_4EKVTez4xYh3HWzYqbqvb5Gv');
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const { data, error } = await resend.emails.send({
       from: 'Contact Form <onboarding@resend.dev>',
-      to: ['your-email@example.com'], // Replace with your email
+      to: ['salaam.nasif@gmail.com'], // Replace with your email
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
