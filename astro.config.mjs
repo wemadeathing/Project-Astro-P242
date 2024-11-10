@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  output: 'hybrid', // Use 'hybrid' for mixed rendering
+  output: 'server', // Use 'hybrid' for mixed rendering
   integrations: [
     tailwind({
       applyBaseStyles: false,
